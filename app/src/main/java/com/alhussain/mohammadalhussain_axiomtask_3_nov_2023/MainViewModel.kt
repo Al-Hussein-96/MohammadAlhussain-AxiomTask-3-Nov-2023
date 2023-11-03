@@ -11,32 +11,36 @@ class MainViewModel : ViewModel() {
 
     private val deque: ArrayDeque<Grid> = ArrayDeque()
 
-     private val grid: MutableList<Grid> = mutableListOf()
+    private val grid: MutableList<Grid> = mutableListOf()
 
     private val _uiState: MutableStateFlow<MutableList<Grid>> = MutableStateFlow(grid)
     val uiState: StateFlow<MutableList<Grid>> = _uiState.asStateFlow()
 
     init {
-        
+
         (1..16).forEach {
             grid.add(Grid(it))
         }
     }
 
 
-    fun performClick(item: Grid){
+    fun performClick(item: Grid) {
         val list = _uiState.value
 
-        changeColorToRed(list,item)
+        val exists = deque.contains(item)
 
-        addToDeque(item)
+        if (!exists) {
+            changeColorToRed(list, item)
 
-        changeColorToBlue(list,item,deque)
+            addToDeque(item)
+
+            changeColorToBlue(list, item, deque)
+        }
 
     }
 
     private fun changeColorToBlue(list: MutableList<Grid>, item: Grid, deque: ArrayDeque<Grid>) {
-        if(deque.size > 2){
+        if (deque.size > 2) {
             val top = deque.removeLast()
 
 
